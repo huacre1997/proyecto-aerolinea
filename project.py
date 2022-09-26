@@ -1,7 +1,9 @@
 from typing import List, Dict
 import random
 
-from config import IGV_TOTAL
+import statistics
+
+from config import IGV_TOTAL,CURRENCY_SYMBOL
 
 
 def main():
@@ -106,6 +108,9 @@ def main():
     # Se inicializa la variable que almacenará el total de IGV
     total_IGV: float = 0
 
+    # Se inicializa la variable all_cheap_tickets que almacenará los precios de pasaje económico
+    all_cheap_tickets: List[float] = []
+
     # Iteración para cada vuelo
     for key, flight in enumerate(flights):
 
@@ -119,6 +124,12 @@ def main():
 
         # Se inicializa la variable que almacenará el total de pasajes vendidos
         total_ticket: int = economic_ticket + premium_ticket
+
+        # Se suma el precio base mas el precio adicional de asiento económico
+        economic_ticket_cost: float = flight['base_price'] + flight['economy_seat']
+
+        # Se se agrega a la lista all_cheap_tickets el precio de un pasaje con asiento económico
+        all_cheap_tickets.append(economic_ticket_cost)
 
         # Se imprime la cantidad de pasajes por cada vuelo
         # Pregunta 1
@@ -175,6 +186,14 @@ def main():
     # Pregunta 4
     print(f"Se cobró un total de $ {round(total_IGV,2)} en IGV")
     print("-"*50)
+
+    # Se imprime el el valor promedio del pasaje económico
+    average_economic_ticket_cost: float = statistics.mean(all_cheap_tickets)
+    print(f"El valor promedio del pasaje económico es: {round(average_economic_ticket_cost,2)}")
+
+    # Aplicando formato de moneda a la variable average_economic_ticket_cost
+    display_total_sale:str = "{}{:,.2f}".format(CURRENCY_SYMBOL, average_economic_ticket_cost)
+    print(f"El valor promedio formateado del pasaje económico es: {display_total_sale}")
 
 
 if __name__ == "__main__":

@@ -1,1 +1,3 @@
 IGV_TOTAL = 18
+
+CURRENCY_SYMBOL = '$ '
