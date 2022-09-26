@@ -97,14 +97,14 @@ def main():
     }]
 
     for key,flight in enumerate(flights):
-        economic_ticket: int = random.randint(flight['ticket_sale_economy_min_range'],flight['ticket_sale_economy_max_range'])
-        premium_ticket: int = random.randint(flight['ticket_sale_premium_min_range'],flight['ticket_sale_premium_max_range'])
+        economic_ticket: int = random.randint(int(flight['ticket_sale_economy_min_range']),int(flight['ticket_sale_economy_max_range']))
+        premium_ticket: int = random.randint(int(flight['ticket_sale_premium_min_range']),int(flight['ticket_sale_premium_max_range']))
         total_ticket: int = economic_ticket + premium_ticket
         print(f"El total de pasajes vendidos de la aerolinea {flight['code']} fueron {total_ticket}")
         
         total_economic_tickets_sales: float = 0
 
-        for k,value in range(economic_ticket):
+        for i in range(economic_ticket):
             economic_ticket_cost: float = (float(flight['base_price']) + float(flight['economy_seat'])) + (float(flight['base_price']) + float(flight['economy_seat'])) * (IGV_TOTAL/100)
             total_economic_tickets_sales += economic_ticket_cost
 
