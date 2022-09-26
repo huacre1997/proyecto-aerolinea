@@ -125,12 +125,6 @@ def main():
         # Se inicializa la variable que almacenará el total de pasajes vendidos
         total_ticket: int = economic_ticket + premium_ticket
 
-        # Se suma el precio base mas el precio adicional de asiento económico
-        economic_ticket_cost: float = flight['base_price'] + flight['economy_seat']
-
-        # Se se agrega a la lista all_cheap_tickets el precio de un pasaje con asiento económico
-        all_cheap_tickets.append(economic_ticket_cost)
-
         # Se imprime la cantidad de pasajes por cada vuelo
         # Pregunta 1
         print(
@@ -142,6 +136,9 @@ def main():
             # Se inicializa el precio del pasaje económico sin IGV
             economic_ticket_cost: float = (
                 float(flight['base_price']) + float(flight['economy_seat']))
+
+           # Se se agrega a la lista all_cheap_tickets el precio de un pasaje con asiento económico
+            all_cheap_tickets.append(economic_ticket_cost)
 
             # Se inicializa el precio total del pasaje económico con IGV
             total_economic_ticket_cost: float = economic_ticket_cost + \
@@ -187,6 +184,7 @@ def main():
     print(f"Se cobró un total de $ {round(total_IGV,2)} en IGV")
     print("-"*50)
 
+    # Pregunta 5
     # Se imprime el el valor promedio del pasaje económico
     average_economic_ticket_cost: float = statistics.mean(all_cheap_tickets)
     print(f"El valor promedio del pasaje económico es: {round(average_economic_ticket_cost,2)}")
