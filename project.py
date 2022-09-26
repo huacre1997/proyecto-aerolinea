@@ -96,17 +96,36 @@ def main():
         'ticket_sale_premium_max_range' : 15
     }]
 
+    total_economic_tickets_sales: float = 0
+
+    total_premium_tickets_sales: float = 0
+
+    total_IGV: float = 0
+
     for key,flight in enumerate(flights):
         economic_ticket: int = random.randint(int(flight['ticket_sale_economy_min_range']),int(flight['ticket_sale_economy_max_range']))
         premium_ticket: int = random.randint(int(flight['ticket_sale_premium_min_range']),int(flight['ticket_sale_premium_max_range']))
         total_ticket: int = economic_ticket + premium_ticket
+
         print(f"El total de pasajes vendidos de la aerolinea {flight['code']} fueron {total_ticket}")
-        
-        total_economic_tickets_sales: float = 0
 
         for i in range(economic_ticket):
-            economic_ticket_cost: float = (float(flight['base_price']) + float(flight['economy_seat'])) + (float(flight['base_price']) + float(flight['economy_seat'])) * (IGV_TOTAL/100)
-            total_economic_tickets_sales += economic_ticket_cost
+            economic_ticket_cost: float = (float(flight['base_price']) + float(flight['economy_seat']))
+            total_economic_ticket_cost: float =  economic_ticket_cost + economic_ticket_cost * (IGV_TOTAL/100)
+            total_IGV += economic_ticket_cost * (IGV_TOTAL/100)
+
+            premium_ticket_cost: float = (float(flight['base_price']) + float(flight['premium_seat']))
+            total_premium_ticket_cost: float = premium_ticket_cost + premium_ticket_cost * (IGV_TOTAL/100)
+            total_IGV += premium_ticket_cost * (IGV_TOTAL/100)
+
+            total_economic_tickets_sales += total_economic_ticket_cost
+            total_premium_tickets_sales += total_premium_ticket_cost
+    
+    print("-"*50)
+    print(f"Se ingresó un total de $ {round(total_economic_tickets_sales,2)} en pasajes económicos")
+    print(f"Se ingresó un total de $ {round(total_premium_tickets_sales,2)} en pasajes premium")
+    print(f"Se cobró un total de $ {round(total_IGV,2)} en IGV")
+    print("-"*50)
 
 if __name__ == "__main__":
     main()
