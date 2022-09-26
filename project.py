@@ -2,6 +2,7 @@ from typing import List, Dict
 import random
 
 import statistics
+import operator
 
 from config import IGV_TOTAL,CURRENCY_SYMBOL
 
@@ -111,6 +112,12 @@ def main():
     # Se inicializa la variable all_cheap_tickets que almacenará los precios de pasaje económico
     all_cheap_tickets: List[float] = []
 
+    # Se inicializa la variable all_premium_tickets que almacenará los precios de pasaje premium
+    all_premium_tickets: List[float] = []
+
+    # Se inicializa la variable tickets_sold que almacenará los pasajes vendidos
+    tickets_sold = {}
+
     # Iteración para cada vuelo
     for key, flight in enumerate(flights):
 
@@ -125,6 +132,17 @@ def main():
         # Se inicializa la variable que almacenará el total de pasajes vendidos
         total_ticket: int = economic_ticket + premium_ticket
 
+        # Destino y cantidad de pasajes vendidos (económicos y premium)
+        destination_of_tickets_sold = {
+            flight['name'] : total_ticket
+        }
+
+        # Se agrega todos los pasajes vendidos con su destino al diccionario tickets_sold
+        tickets_sold.update(destination_of_tickets_sold)
+
+        # Se se agrega a la lista tickets_sold el objeto destino y total de pasaje vendido
+        #tickets_sold.append(destination_and_total_tickets)
+
         # Se imprime la cantidad de pasajes por cada vuelo
         # Pregunta 1
         print(
@@ -137,7 +155,7 @@ def main():
             economic_ticket_cost: float = (
                 float(flight['base_price']) + float(flight['economy_seat']))
 
-           # Se se agrega a la lista all_cheap_tickets el precio de un pasaje con asiento económico
+            # Se agrega a la lista all_cheap_tickets el precio de un pasaje con asiento económico
             all_cheap_tickets.append(economic_ticket_cost)
 
             # Se inicializa el precio total del pasaje económico con IGV
@@ -156,6 +174,9 @@ def main():
             # Se inicializa el precio del pasaje premium sin IGV
             premium_ticket_cost: float = (
                 float(flight['base_price']) + float(flight['premium_seat']))
+
+            # Se agrega a la lista all_premium_tickets el precio de un pasaje con asiento premium
+            all_premium_tickets.append(premium_ticket_cost)
 
             # Se inicializa el precio total del pasaje premium con IGV
             total_premium_ticket_cost: float = premium_ticket_cost + \
@@ -185,13 +206,37 @@ def main():
     print("-"*50)
 
     # Pregunta 5
-    # Se imprime el el valor promedio del pasaje económico
+    # Se imprime el valor promedio del pasaje económico
     average_economic_ticket_cost: float = statistics.mean(all_cheap_tickets)
     print(f"El valor promedio del pasaje económico es: {round(average_economic_ticket_cost,2)}")
 
     # Aplicando formato de moneda a la variable average_economic_ticket_cost
-    display_total_sale:str = "{}{:,.2f}".format(CURRENCY_SYMBOL, average_economic_ticket_cost)
-    print(f"El valor promedio formateado del pasaje económico es: {display_total_sale}")
+    average_formatted_economy_ticket:str = "{}{:,.2f}".format(CURRENCY_SYMBOL, average_economic_ticket_cost)
+    print(f"El valor promedio formateado del pasaje económico es: {average_formatted_economy_ticket}")
+    print("-"*50)
+
+    # Pregunta 6
+    # Se imprime el valor promedio del pasaje premium
+    average_premium_ticket_cost: float = statistics.mean(all_premium_tickets)
+    print(f"El valor promedio del pasaje premium es: {round(average_premium_ticket_cost,2)}")
+    
+    # Aplicando formato de moneda a la variable average_economic_ticket_cost
+    average_formatted_premium_ticket:str = "{}{:,.2f}".format(CURRENCY_SYMBOL, average_premium_ticket_cost)
+    print(f"El valor promedio formateado del pasaje premium es: {average_formatted_premium_ticket}")
+    print("-"*50)
+
+    # Pregunta 7
+    # Se imprime los pasajes vendidos con su destino
+    passengers: str = str(tickets_sold)
+    print(f"La cantidad de pasajes vendidos son: {passengers}")
+
+    # Se obtiene el maximo de pasajeros a traves de los pasajes vendidos
+    max_passengers_destination = max(tickets_sold.items(), key=operator.itemgetter(1))[0]
+    max_passengers = max(tickets_sold.items(), key=operator.itemgetter(1))[1]
+    print(f"El vuelo con la mayor cantidad de pasajeros es: {max_passengers_destination} con una cantidad de {max_passengers}")
+    print("-"*50)
+
+
 
 
 if __name__ == "__main__":
