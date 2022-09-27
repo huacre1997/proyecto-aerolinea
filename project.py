@@ -4,7 +4,7 @@ import random
 import statistics
 import operator
 
-from config import IGV_TOTAL,CURRENCY_SYMBOL
+from config import IGV_TOTAL, CURRENCY_SYMBOL
 
 
 def main():
@@ -23,7 +23,7 @@ def main():
         'ticket_sale_premium_max_range': 20
     }, {
         'code': 'LIM-CUS',
-        'name': 'LLima - Cusco',
+        'name': 'Lima - Cusco',
         'base_price': 136.51,
         'economy_seat': 8,
         'premium_seat': 16,
@@ -114,6 +114,9 @@ def main():
 
     # Se inicializa la variable all_premium_tickets que almacenará los precios de pasaje premium
     all_premium_tickets: List[float] = []
+    
+    # Se inicializa la variable all_flights que almacenará los  vuelos programados
+    all_flights: List[Dict[str, str | float]] = []
 
     # Se inicializa la variable tickets_sold que almacenará los pasajes vendidos
     tickets_sold = {}
@@ -134,14 +137,14 @@ def main():
 
         # Destino y cantidad de pasajes vendidos (económicos y premium)
         destination_of_tickets_sold = {
-            flight['name'] : total_ticket
+            flight['name']: total_ticket
         }
 
         # Se agrega todos los pasajes vendidos con su destino al diccionario tickets_sold
         tickets_sold.update(destination_of_tickets_sold)
 
         # Se se agrega a la lista tickets_sold el objeto destino y total de pasaje vendido
-        #tickets_sold.append(destination_and_total_tickets)
+        # tickets_sold.append(destination_and_total_tickets)
 
         # Se imprime la cantidad de pasajes por cada vuelo
         # Pregunta 1
@@ -160,10 +163,10 @@ def main():
 
             # Se inicializa el precio total del pasaje económico con IGV
             total_economic_ticket_cost: float = economic_ticket_cost + \
-                economic_ticket_cost * (IGV_TOTAL/100)
+                economic_ticket_cost * (IGV_TOTAL / 100)
 
             # Se va sumando el impuesto de cada pasaje económico del vuelo
-            total_IGV += economic_ticket_cost * (IGV_TOTAL/100)
+            total_IGV += economic_ticket_cost * (IGV_TOTAL / 100)
 
             # Se va sumando el precio total del pasaje económico del vuelo
             total_economic_tickets_sales += total_economic_ticket_cost
@@ -180,15 +183,27 @@ def main():
 
             # Se inicializa el precio total del pasaje premium con IGV
             total_premium_ticket_cost: float = premium_ticket_cost + \
-                premium_ticket_cost * (IGV_TOTAL/100)
+                premium_ticket_cost * (IGV_TOTAL / 100)
 
             # Se va sumando el impuesto de cada pasaje premium del vuelo
-            total_IGV += premium_ticket_cost * (IGV_TOTAL/100)
+            total_IGV += premium_ticket_cost * (IGV_TOTAL / 100)
 
             # Se va sumando el precio total del pasaje premium del vuelo
             total_premium_tickets_sales += total_premium_ticket_cost
+        total_ticket_sales = round(
+            total_premium_tickets_sales + total_premium_tickets_sales, 2)
+        
+        # Creamos el diccionario para los vuelos programados
+        flight: Dict[str, list] = {
+            "route": flight["name"],
+            "airplane": flight["airplane"],
+            "total_tickets_sales": total_ticket_sales,
+            "passengers": total_ticket,
 
-    print("-"*50)
+        }
+        all_flights.append(flight)
+
+    print("-" * 50)
 
     # Se imprime el total de pasajes económicos que se han vendido
     # Pregunta 2
@@ -203,40 +218,68 @@ def main():
     # Se imprime el total IGV que se ha cobrado
     # Pregunta 4
     print(f"Se cobró un total de $ {round(total_IGV,2)} en IGV")
-    print("-"*50)
+    print("-" * 50)
 
     # Pregunta 5
     # Se imprime el valor promedio del pasaje económico
     average_economic_ticket_cost: float = statistics.mean(all_cheap_tickets)
-    print(f"El valor promedio del pasaje económico es: {round(average_economic_ticket_cost,2)}")
+    print(
+        f"El valor promedio del pasaje económico es: {round(average_economic_ticket_cost,2)}")
 
     # Aplicando formato de moneda a la variable average_economic_ticket_cost
-    average_formatted_economy_ticket:str = "{}{:,.2f}".format(CURRENCY_SYMBOL, average_economic_ticket_cost)
-    print(f"El valor promedio formateado del pasaje económico es: {average_formatted_economy_ticket}")
-    print("-"*50)
+    average_formatted_economy_ticket: str = "{}{:,.2f}".format(
+        CURRENCY_SYMBOL, average_economic_ticket_cost)
+    print(
+        f"El valor promedio formateado del pasaje económico es: {average_formatted_economy_ticket}")
+    print("-" * 50)
 
     # Pregunta 6
     # Se imprime el valor promedio del pasaje premium
     average_premium_ticket_cost: float = statistics.mean(all_premium_tickets)
-    print(f"El valor promedio del pasaje premium es: {round(average_premium_ticket_cost,2)}")
-    
+    print(
+        f"El valor promedio del pasaje premium es: {round(average_premium_ticket_cost,2)}")
+
     # Aplicando formato de moneda a la variable average_economic_ticket_cost
-    average_formatted_premium_ticket:str = "{}{:,.2f}".format(CURRENCY_SYMBOL, average_premium_ticket_cost)
-    print(f"El valor promedio formateado del pasaje premium es: {average_formatted_premium_ticket}")
-    print("-"*50)
+    average_formatted_premium_ticket: str = "{}{:,.2f}".format(
+        CURRENCY_SYMBOL, average_premium_ticket_cost)
+    print(
+        f"El valor promedio formateado del pasaje premium es: {average_formatted_premium_ticket}")
+    print("-" * 50)
 
     # Pregunta 7
     # Se imprime los pasajes vendidos con su destino
-    passengers: str = str(tickets_sold)
-    print(f"La cantidad de pasajes vendidos son: {passengers}")
 
     # Se obtiene el maximo de pasajeros a traves de los pasajes vendidos
-    max_passengers_destination = max(tickets_sold.items(), key=operator.itemgetter(1))[0]
+    max_passengers_destination = max(
+        tickets_sold.items(), key=operator.itemgetter(1))[0]
     max_passengers = max(tickets_sold.items(), key=operator.itemgetter(1))[1]
-    print(f"El vuelo con la mayor cantidad de pasajeros es: {max_passengers_destination} con una cantidad de {max_passengers}")
-    print("-"*50)
+    print(
+        f"El vuelo con la mayor cantidad de pasajeros es: {max_passengers_destination} con una cantidad de {max_passengers}")
 
+    # Pregunta 8
+    # Ordenemos lista de vuelos según el número de pasajeros (de menor a mayor)
+    sorted_passengers = sorted(all_flights, key=lambda x: x["passengers"])
+    print("-" * 50)
 
+    print(
+        f"El vuelo con la menor cantidad de pasajeros es: {sorted_passengers[0]['route']} con una cantidad de {sorted_passengers[0]['passengers']}")
+    print("-" * 50)
+
+    # Pregunta 9
+    # Ordenemos lista de vuelos según los ingresos por la venta de asientos (de mayor a menor)
+    order_total_tickets_sales = sorted(
+        all_flights, key=lambda x: x["total_tickets_sales"], reverse=True)
+
+    # Iteramos los 3 veces la lista ordeana de vuelos 
+    for i in range(3):
+        print(
+            f"El {i+1}° vuelo con con mayor ingresos es: {order_total_tickets_sales[i]['route']} con un total de {CURRENCY_SYMBOL}{order_total_tickets_sales[i]['total_tickets_sales']}")
+
+    print("-" * 50)
+    # Pregunta 10
+    print(
+        f"El avión que transportó mas pasajeros es: {sorted_passengers[0]['airplane']}")
+    print("-" * 50)
 
 
 if __name__ == "__main__":
