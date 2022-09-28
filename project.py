@@ -249,21 +249,15 @@ def main():
         f"El valor promedio formateado del pasaje premium es: {average_formatted_premium_ticket}")
     print("-" * 50)
 
-    # Pregunta 7
-    # Se imprime los pasajes vendidos con su destino
-
-    # Se obtiene el maximo de pasajeros a traves de los pasajes vendidos
-    max_passengers_destination = max(
-        tickets_sold.items(), key=operator.itemgetter(1))[0]
-    max_passengers = max(tickets_sold.items(), key=operator.itemgetter(1))[1]
-    print(
-        f"El vuelo con la mayor cantidad de pasajeros es: {max_passengers_destination} con una cantidad de {max_passengers}")
-
-    # Pregunta 8
     # Ordenemos lista de vuelos según el número de pasajeros (de menor a mayor)
     sorted_passengers = sorted(all_flights, key=lambda x: x["passengers"])
     print("-" * 50)
-
+    # Pregunta 7
+    # Se obtiene el maximo de pasajeros a traves de los pasajes vendidos
+    print(
+        f"El vuelo con la mayor cantidad de pasajeros es: {sorted_passengers[-1]['route']} con una cantidad de {sorted_passengers[-1]['passengers']}")
+    # Pregunta 8
+    # Se obtiene el mínimo de pasajeros a traves de los pasajes vendidos
     print(
         f"El vuelo con la menor cantidad de pasajeros es: {sorted_passengers[0]['route']} con una cantidad de {sorted_passengers[0]['passengers']}")
     print("-" * 50)
@@ -276,7 +270,7 @@ def main():
     # Iteramos los 3 veces la lista ordeana de vuelos 
     for i in range(3):
         print(
-            f"El {i+1}° vuelo con con mayor ingresos es: {order_total_tickets_sales[i]['route']} con un total de {CURRENCY_SYMBOL}{order_total_tickets_sales[i]['total_tickets_sales']}")
+            f"El {i+1}° vuelo con mayor ingresos es: {order_total_tickets_sales[i]['route']} con un total de {CURRENCY_SYMBOL}{order_total_tickets_sales[i]['total_tickets_sales']}")
 
     print("-" * 50)
     # Pregunta 10
