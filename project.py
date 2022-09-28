@@ -121,9 +121,6 @@ def main():
     # Se inicializa la variable all_flights que almacenará los  vuelos programados
     all_flights: List[Dict[str, str | float]] = []
 
-    # Se inicializa la variable tickets_sold que almacenará los pasajes vendidos
-    tickets_sold = {}
-
     # Iteración para cada vuelo
     for key, flight in enumerate(flights):
 
@@ -137,14 +134,6 @@ def main():
 
         # Sumará los pasajes vendidos
         total_ticket = total_ticket + economic_ticket + premium_ticket
-
-        # Destino y cantidad de pasajes vendidos (económicos y premium)
-        destination_of_tickets_sold = {
-            flight['name']: total_ticket
-        }
-
-        # Se agrega todos los pasajes vendidos con su destino al diccionario tickets_sold
-        tickets_sold.update(destination_of_tickets_sold)
 
         # Se se agrega a la lista tickets_sold el objeto destino y total de pasaje vendido
         # tickets_sold.append(destination_and_total_tickets)
@@ -226,27 +215,19 @@ def main():
     # Pregunta 5
     # Se imprime el valor promedio del pasaje económico
     average_economic_ticket_cost: float = statistics.mean(all_cheap_tickets)
-    print(
-        f"El valor promedio del pasaje económico es: {round(average_economic_ticket_cost,2)}")
-
-    # Aplicando formato de moneda a la variable average_economic_ticket_cost
     average_formatted_economy_ticket: str = "{}{:,.2f}".format(
         CURRENCY_SYMBOL, average_economic_ticket_cost)
     print(
-        f"El valor promedio formateado del pasaje económico es: {average_formatted_economy_ticket}")
+        f"El valor promedio del pasaje económico es: {average_formatted_economy_ticket}")
     print("-" * 50)
 
     # Pregunta 6
     # Se imprime el valor promedio del pasaje premium
     average_premium_ticket_cost: float = statistics.mean(all_premium_tickets)
-    print(
-        f"El valor promedio del pasaje premium es: {round(average_premium_ticket_cost,2)}")
-
-    # Aplicando formato de moneda a la variable average_economic_ticket_cost
     average_formatted_premium_ticket: str = "{}{:,.2f}".format(
         CURRENCY_SYMBOL, average_premium_ticket_cost)
     print(
-        f"El valor promedio formateado del pasaje premium es: {average_formatted_premium_ticket}")
+        f"El valor promedio del pasaje premium es: {average_formatted_premium_ticket}")
     print("-" * 50)
 
     # Ordenemos lista de vuelos según el número de pasajeros (de menor a mayor)
