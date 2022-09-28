@@ -117,9 +117,9 @@ def main():
 
     # Se inicializa la variable all_premium_tickets que almacenará los precios de pasaje premium
     all_premium_tickets: List[float] = []
-    
+
     # Se inicializa la variable all_flights que almacenará los  vuelos programados
-    all_flights: List[Dict[str, str | float]] = []
+    all_scheduled_flights: List[Dict[str, str | float]] = []
 
     # Iteración para cada vuelo
     for key, flight in enumerate(flights):
@@ -133,10 +133,7 @@ def main():
             flight['ticket_sale_premium_max_range']))
 
         # Sumará los pasajes vendidos
-        total_ticket = total_ticket + economic_ticket + premium_ticket
-
-        # Se se agrega a la lista tickets_sold el objeto destino y total de pasaje vendido
-        # tickets_sold.append(destination_and_total_tickets)
+        total_ticket += economic_ticket + premium_ticket
 
         # Iteración por cada asiento económico de cada vuelo
         for i in range(economic_ticket):
@@ -177,23 +174,25 @@ def main():
 
             # Se va sumando el precio total del pasaje premium del vuelo
             total_premium_tickets_sales += total_premium_ticket_cost
+
+        # Sumando total de tickets premium y total de tickets económicos vendidos y
         total_ticket_sales = round(
-            total_premium_tickets_sales + total_premium_tickets_sales, 2)
-        
+            total_premium_tickets_sales + total_economic_tickets_sales, 2)
+
+        total_tickets_per_fly: int = economic_ticket + premium_ticket
         # Creamos el diccionario para los vuelos programados
-        flight: Dict[str, list] = {
+        scheduled_flights: Dict[str, list] = {
             "route": flight["name"],
             "airplane": flight["airplane"],
             "total_tickets_sales": total_ticket_sales,
-            "passengers": total_ticket,
+            "total_tickets_per_fly": total_tickets_per_fly,
 
         }
-        all_flights.append(flight)
+        all_scheduled_flights.append(scheduled_flights)
 
     # Se imprime la cantidad de pasajes por todos los vuelos
     # Pregunta 1
-    print(
-        f"Se vendieron un total de {total_ticket} tickets")
+    print(f"Se vendieron un total de {total_ticket} tickets")
 
     print("-" * 50)
 
@@ -231,24 +230,27 @@ def main():
     print("-" * 50)
 
     # Ordenemos lista de vuelos según el número de pasajeros (de menor a mayor)
-    sorted_passengers = sorted(all_flights, key=lambda x: x["passengers"])
+    sorted_passengers: List[Dict[str, str | float]] = sorted(
+        all_scheduled_flights, key=lambda x: x["total_tickets_per_fly"])
     print("-" * 50)
+
     # Pregunta 7
     # Se obtiene el maximo de pasajeros a traves de los pasajes vendidos
     print(
-        f"El vuelo con la mayor cantidad de pasajeros es: {sorted_passengers[-1]['route']} con una cantidad de {sorted_passengers[-1]['passengers']}")
+        f"El vuelo con la mayor cantidad de pasajeros es: {sorted_passengers[-1]['route']} con una cantidad de {sorted_passengers[-1]['total_tickets_per_fly']}")
+
     # Pregunta 8
     # Se obtiene el mínimo de pasajeros a traves de los pasajes vendidos
     print(
-        f"El vuelo con la menor cantidad de pasajeros es: {sorted_passengers[0]['route']} con una cantidad de {sorted_passengers[0]['passengers']}")
+        f"El vuelo con la menor cantidad de pasajeros es: {sorted_passengers[0]['route']} con una cantidad de {sorted_passengers[0]['total_tickets_per_fly']}")
     print("-" * 50)
 
     # Pregunta 9
     # Ordenemos lista de vuelos según los ingresos por la venta de asientos (de mayor a menor)
-    order_total_tickets_sales = sorted(
-        all_flights, key=lambda x: x["total_tickets_sales"], reverse=True)
+    order_total_tickets_sales: List[Dict[str, str | float]] = sorted(
+        all_scheduled_flights, key=lambda x: x["total_tickets_sales"], reverse=True)
 
-    # Iteramos los 3 veces la lista ordeana de vuelos 
+    # Iteramos los 3 veces la lista ordeana de vuelos
     for i in range(3):
         print(
             f"El {i+1}° vuelo con mayor ingresos es: {order_total_tickets_sales[i]['route']} con un total de {CURRENCY_SYMBOL}{order_total_tickets_sales[i]['total_tickets_sales']}")
@@ -256,8 +258,10 @@ def main():
     print("-" * 50)
     # Pregunta 10
     print(
-        f"El avión que transportó mas pasajeros es: {sorted_passengers[0]['airplane']}")
+        f"El avión que transportó mas pasajeros es: {sorted_passengers[-1]['airplane']}")
     print("-" * 50)
+    for i in sorted_passengers:
+        print(i)
 
 
 if __name__ == "__main__":
