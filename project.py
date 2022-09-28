@@ -100,6 +100,9 @@ def main():
         'ticket_sale_premium_max_range': 15
     }]
 
+    # Se inicializa la variable que almacenará el total de tickets
+    total_ticket: int = 0
+
     # Se inicializa la variable que almacenará la venta total de los pasajes económicos
     total_economic_tickets_sales: float = 0
 
@@ -132,8 +135,8 @@ def main():
         premium_ticket: int = random.randint(int(flight['ticket_sale_premium_min_range']), int(
             flight['ticket_sale_premium_max_range']))
 
-        # Se inicializa la variable que almacenará el total de pasajes vendidos
-        total_ticket: int = economic_ticket + premium_ticket
+        # Sumará los pasajes vendidos
+        total_ticket = total_ticket + economic_ticket + premium_ticket
 
         # Destino y cantidad de pasajes vendidos (económicos y premium)
         destination_of_tickets_sold = {
@@ -145,11 +148,6 @@ def main():
 
         # Se se agrega a la lista tickets_sold el objeto destino y total de pasaje vendido
         # tickets_sold.append(destination_and_total_tickets)
-
-        # Se imprime la cantidad de pasajes por cada vuelo
-        # Pregunta 1
-        print(
-            f"El total de pasajes vendidos por el vuelo {flight['code']} fueron {total_ticket}")
 
         # Iteración por cada asiento económico de cada vuelo
         for i in range(economic_ticket):
@@ -202,6 +200,11 @@ def main():
 
         }
         all_flights.append(flight)
+
+    # Se imprime la cantidad de pasajes por todos los vuelos
+    # Pregunta 1
+    print(
+        f"Se vendieron un total de {total_ticket} tickets")
 
     print("-" * 50)
 
