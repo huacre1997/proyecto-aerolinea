@@ -181,7 +181,7 @@ def main():
 
         total_tickets_per_fly: int = economic_ticket + premium_ticket
         # Creamos el diccionario para los vuelos programados
-        scheduled_flights: Dict[str, list] = {
+        scheduled_flights: Dict[str, str | int | float] = {
             "route": flight["name"],
             "airplane": flight["airplane"],
             "total_tickets_sales": total_ticket_sales,
@@ -260,9 +260,6 @@ def main():
     print(
         f"El avión que transportó mas pasajeros es: {sorted_passengers[-1]['airplane']}")
     print("-" * 50)
-    for i in sorted_passengers:
-        print(i)
-
 
 if __name__ == "__main__":
     main()
